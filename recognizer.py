@@ -1,8 +1,15 @@
 from extractors.natasha import NatashaExtractor
 
 class Recognizer(object):
+    '''Class Recognizer get text parameter and try to recognize entities like names, dates, locations, addresses and
+    money
+    '''
 
     def __init__(self, text):
+        '''This method initialize parameters and create objects of several extractors type
+
+        :param text:
+        '''
         self.text = text
         self.natashaExtractor = NatashaExtractor(self.text)
 

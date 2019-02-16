@@ -4,7 +4,9 @@ from recognizer import Recognizer
 
 app = Flask(__name__)
 
-# HTTP Errors
+###############
+# HTTP Errors #
+###############
 
 @app.errorhandler(400)
 def bad_request(error):
@@ -17,8 +19,9 @@ def not_found(error):
     ''' Return HTTP status code 404 '''
     return make_response(jsonify({'error': 'Not found'}), 404)
 
-
-# API methods
+###############
+# API methods #
+###############
 
 @app.route('/ner/api/v0.1/', methods=['GET'])
 def get_tasks():
