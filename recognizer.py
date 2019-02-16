@@ -15,6 +15,7 @@ class Recognizer(object):
 
 
     def _get_names(self):
+        '''Search names in text'''
         natasha_result = self.natashaExtractor.get_names()
         separator = '@'
 
@@ -47,11 +48,13 @@ class Recognizer(object):
 
 
     def _get_dates(self):
+        '''Search dates in text'''
         result = self.natashaExtractor.get_dates()
         return result
 
 
     def _get_locations(self):
+        '''Search locations in text'''
         natasha_result = self.natashaExtractor.get_locations()
         result_set = set()
         for item in natasha_result:
@@ -62,16 +65,20 @@ class Recognizer(object):
 
 
     def _get_addresses(self):
+        '''Search addresses in text'''
         result = self.natashaExtractor.get_addresses()
         return result
 
 
     def _get_money(self):
+        '''Search money in text'''
         result = self.natashaExtractor.get_money()
         return result
 
 
     def get_entities(self, param=None):
+        '''Search in text entities, which is contained in argument param. If param containes value "all" then
+        method return all existed entities'''
         result = {}
 
         if 'name' in param or 'all' in param:
