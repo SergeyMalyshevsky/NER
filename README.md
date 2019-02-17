@@ -147,7 +147,9 @@ If we set value "all", service return all types of entities.
 
 * [Flask](http://flask.pocoo.org/) - The web framework used
 * [Pip](https://pip.pypa.io/en/stable/user_guide/) - Package Management
-* [Natasha](https://natasha.readthedocs.io/ru/latest/) - Used to recognize entities from text
+* [IPython] (https://ipython.org/) - Command shell for interactive computing
+* [Natasha](https://natasha.readthedocs.io/ru/latest/) - Library which recognize entities from text
+
 
 ## Author
 
