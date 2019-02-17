@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request, abort, make_response
 from recognizer import Recognizer
 
-
 app = Flask(__name__)
+
 
 ###############
 # HTTP Errors #
@@ -18,6 +18,7 @@ def bad_request(error):
 def not_found(error):
     ''' Return HTTP status code 404 '''
     return make_response(jsonify({'error': 'Not found'}), 404)
+
 
 ###############
 # API methods #
@@ -46,7 +47,7 @@ def create_task():
     recognizer = Recognizer(text)
     entities = recognizer.get_entities(param)
 
-    return jsonify({'entities': entities, 'text': text}), 201
+    return jsonify({'entities': entities, 'text': text})
 
 
 if __name__ == '__main__':
