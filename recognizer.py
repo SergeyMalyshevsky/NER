@@ -1,4 +1,7 @@
 from extractors.natasha import NatashaExtractor
+from extractors.deepmipt import DeepmiptExtractor
+from extractors.pymorphy2 import Pymorphy2Extractor
+from extractors.regex import RegexExtractor
 from validator import Validator
 
 
@@ -14,7 +17,11 @@ class Recognizer(object):
         '''
         self.text = text
         self.validator = Validator()
-        self.natashaExtractor = NatashaExtractor(self.text)
+
+        self.natashaExtractor = NatashaExtractor(text)
+        self.deepmiptExtractor = DeepmiptExtractor(text)
+        self.pymorphy2Extractor = Pymorphy2Extractor(text)
+        self.regexExtractor = RegexExtractor(text)
 
     @staticmethod
     def _remove_duplicated_names(name_list):
@@ -71,6 +78,9 @@ class Recognizer(object):
         '''Search names in text'''
         names_list = []
         names_list += self.natashaExtractor.get_names()
+        names_list += self.deepmiptExtractor.get_names()
+        names_list += self.pymorphy2Extractor.get_names()
+        names_list += self.regexExtractor.get_names()
 
         cleared_list = Recognizer._remove_duplicated_names(names_list)
         result = self.validator.check(cleared_list, "name")
@@ -80,6 +90,7 @@ class Recognizer(object):
         '''Search dates in text'''
         date_list = []
         date_list += self.natashaExtractor.get_dates()
+        date_list += self.regexExtractor.get_dates()
 
         cleared_list = Recognizer._remove_duplicated_dates(date_list)
         result = self.validator.check(cleared_list, "date")
@@ -89,6 +100,8 @@ class Recognizer(object):
         '''Search locations in text'''
         location_list = []
         location_list += self.natashaExtractor.get_locations()
+        location_list += self.deepmiptExtractor.get_locations()
+        location_list += self.regexExtractor.get_locations()
 
         cleared_list = Recognizer._remove_duplicated_location(location_list)
         result = self.validator.check(cleared_list, "location")
@@ -98,6 +111,7 @@ class Recognizer(object):
         '''Search addresses in text'''
         address_list = []
         address_list += self.natashaExtractor.get_addresses()
+        address_list += self.regexExtractor.get_addresses()
 
         cleared_list = Recognizer._remove_duplicated_addresses(address_list)
         result = self.validator.check(cleared_list, "address")
@@ -107,6 +121,7 @@ class Recognizer(object):
         '''Search money in text'''
         money_list = []
         money_list += self.natashaExtractor.get_money()
+        money_list += self.regexExtractor.get_money()
 
         cleared_list = Recognizer._remove_duplicated_money(money_list)
         result = self.validator.check(cleared_list, "money")

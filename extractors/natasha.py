@@ -22,6 +22,10 @@ from natasha.markup import (
 
 
 class NatashaExtractor:
+    '''This class used library Natasha for search entities in text
+
+    https://github.com/natasha/natasha
+    '''
 
     def __init__(self, text):
         self.text = text
