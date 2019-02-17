@@ -40,7 +40,7 @@ Run local web server:
 python app.py
 ```
 
-Use Postman or another software to send POST request to address http://127.0.0.1:5000/ner/api/v0.1
+Use Postman or another software to send POST request to address http://127.0.0.1:5000/ner/api/v0.1/
 Body of request have to contain two elements: 
 - text - source text in which we will search entities
 - param - array of entity types which we will find. It can use following values: "name", "date", "location", "address", "money".
