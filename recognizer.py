@@ -1,4 +1,6 @@
 from extractors.natasha import NatashaExtractor
+from validator import Validator
+
 
 class Recognizer(object):
     '''Class Recognizer get text parameter and try to recognize entities like names, dates, locations, addresses and
@@ -8,20 +10,19 @@ class Recognizer(object):
     def __init__(self, text):
         '''This method initialize parameters and create objects of several extractors type
 
-        :param text:
+        :param text: input text
         '''
         self.text = text
+        self.validator = Validator()
         self.natashaExtractor = NatashaExtractor(self.text)
 
-
-    def _get_names(self):
-        '''Search names in text'''
-        natasha_result = self.natashaExtractor.get_names()
+    @staticmethod
+    def _remove_duplicated_names(name_list):
         separator = '@'
 
         # delete duplicated values
         result_set = set()
-        for item in natasha_result:
+        for item in name_list:
             name = ""
             if 'first' in item:
                 name = item['first']
@@ -32,7 +33,6 @@ class Recognizer(object):
             if 'last' in item:
                 name += item['last']
             result_set.add(name)
-
 
         # convert set to list
         result_list = []
@@ -46,35 +46,71 @@ class Recognizer(object):
 
         return result_list
 
+    @staticmethod
+    def _remove_duplicated_dates(date_list):
+        return date_list
 
-    def _get_dates(self):
-        '''Search dates in text'''
-        result = self.natashaExtractor.get_dates()
-        return result
-
-
-    def _get_locations(self):
-        '''Search locations in text'''
-        natasha_result = self.natashaExtractor.get_locations()
+    @staticmethod
+    def _remove_duplicated_location(location_list):
         result_set = set()
-        for item in natasha_result:
+        for item in location_list:
             result_set.add(item['name'])
 
         result_list = list(result_set)
         return result_list
 
+    @staticmethod
+    def _remove_duplicated_addresses(address_list):
+        return address_list
+
+    @staticmethod
+    def _remove_duplicated_money(money_list):
+        return money_list
+
+    def _get_names(self):
+        '''Search names in text'''
+        names_list = []
+        names_list += self.natashaExtractor.get_names()
+
+        cleared_list = Recognizer._remove_duplicated_names(names_list)
+        result = self.validator.check(cleared_list, "name")
+        return result
+
+    def _get_dates(self):
+        '''Search dates in text'''
+        date_list = []
+        date_list += self.natashaExtractor.get_dates()
+
+        cleared_list = Recognizer._remove_duplicated_dates(date_list)
+        result = self.validator.check(cleared_list, "date")
+        return result
+
+    def _get_locations(self):
+        '''Search locations in text'''
+        location_list = []
+        location_list += self.natashaExtractor.get_locations()
+
+        cleared_list = Recognizer._remove_duplicated_location(location_list)
+        result = self.validator.check(cleared_list, "location")
+        return result
 
     def _get_addresses(self):
         '''Search addresses in text'''
-        result = self.natashaExtractor.get_addresses()
-        return result
+        address_list = []
+        address_list += self.natashaExtractor.get_addresses()
 
+        cleared_list = Recognizer._remove_duplicated_addresses(address_list)
+        result = self.validator.check(cleared_list, "address")
+        return result
 
     def _get_money(self):
         '''Search money in text'''
-        result = self.natashaExtractor.get_money()
-        return result
+        money_list = []
+        money_list += self.natashaExtractor.get_money()
 
+        cleared_list = Recognizer._remove_duplicated_money(money_list)
+        result = self.validator.check(cleared_list, "money")
+        return result
 
     def get_entities(self, param=None):
         '''Search in text entities, which is contained in argument param. If param containes value "all" then
